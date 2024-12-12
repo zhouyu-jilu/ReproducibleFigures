@@ -251,18 +251,21 @@ The results of the ANOVA table suggest that there is a highly significant effect
 ### c) Reflect on your experience running their code. (300-500 words)
 
 -   *What elements of your partner's code helped you to understand and run their data pipeline?*
-
+Clear code comments and writing only a few lines per chunk made it easy to see the order of the code and what it did.
 -   *Did it run? Did you need to fix anything?*
+I think that part of the reason why I had difficulties running it initially was due to problems with PositCloud (I am unable to use the offline version of R as my laptop is currently non functional, the library computers don't allow R to be downloaded, and neither does the college laptop that was loaned to me). This particularly seemed to be the case for anything involving renv. However, if I just installed the packages initially when prompted, they would load without issues.  The first part of the code involving sources (i.e. source(here("functions","libraries.r"))). However, I saw that the files were actually .R not .r, so after changing the code to  source(here("functions","libraries.R")), I was able to run the chunk. On the other hand, for plotting the first figure, I initially received error messages due to the deprecated use of a particular line of code, which a new version of ggplot2 no longer recognised. This may have been avoided if renv had functioned properly. As it hadn't, I searched up the error and altered the function in the function file, to match the updated code requirements. A similar deprecation problem was found in the figure analysis chunk, and was likewise updated (at which point it ran correctly). On the other hand, I was unable to render the HTML from the file, unless I commented out all of the 'save as png' sections (after which it rendered without issue).
 
 -   *What suggestions would you make for improving their code to make it more understandable or reproducible, and why?*
-
+In general I found the code well explained and understandable. I still believe that had renv functioned (which my partner had set up, and I am not sure why it did not work), I would not have encountered to deprecated code errors, and as such the code would have run smoothly and achieved its intended purpose. There is nothing in particular that I would suggest would make it easier. Perhaps (as an inexperienced coder) it would have been simpler for me to not use functions that were separated out in another file. However, for someone more familiar with coding, I am sure that separate function files are more uesful.
 -   *If you needed to alter your partner's figure using their code, do you think that would be easy or difficult, and why?*
+I think altering my partner's figures should be easy enough with some basic understanding of R, as they had commented much of what their code did, and also had separated things into the function folder. If necessary, direct edits could be made there.
 
 ### d) Reflect on your own code based on your experience with your partner's code and their review of yours. (300-500 words)
 
 -   *What improvements did they suggest, and do you agree?*
 
 -   *What did you learn about writing code for other people?*
+I find writing code for other people (and myself) difficult. However, I think that if you treat your code as if you are writing it for someone else, it will be much more useful to you in the future, as you are unlikely to remember much of the details of it, and so clear explanations and comments help. Likewise, if it can run on someone else's device, then it can run on yours in the future, if features such as 'renv' are used to preserve package versions.
 
 ### e) What are the main barriers for scientists to share their data and code, and what could be done to overcome them? (500-700 words)
 
