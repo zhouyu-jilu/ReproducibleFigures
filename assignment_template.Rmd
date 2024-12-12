@@ -132,7 +132,7 @@ These are the packages that will be used. They need to be installed, and loaded 
 ```{r Data Exploration}
 
 # Make sure your code prints. 
-renv::snapshot()
+#renv::snapshot()
 
 library(tidyverse)
 library(palmerpenguins)
@@ -181,7 +181,7 @@ ggplot(data = penguins_clean, aes(x = sex, y = body_mass_g, colour = species)) +
 
 There appears to be an interesting distribution for body mass, so we could test if there is a stronger relationship between sex and body mass, or species and body mass, as well as any interaction effects. Therefore I will carry out a two-way ANOVA test.
 Just from looking at the exploratory plot, I would predict that male penguins (on average) are heavier than female penguins, and that there is a significant difference between the weight of Gentoo penguins in comparison to Chinstrap or Adelie penguins.
-To check that the assumptions of the ANOVA are met, the Shapiro-Wilks test and Levene test also need to be carried out
+To check that the assumptions of the ANOVA are met, the Shapiro-Wilks test and Levene test also need to be carried out.
 
 ### Statistical Methods
 I will carry out a two way ANOVA test.
@@ -238,13 +238,13 @@ The results of the ANOVA table suggest that there is a highly significant effect
 
 *Upload your RProject you created for **Question 2** and any files and subfolders used to GitHub. Do not include any identifiers such as your name. Make sure your GitHub repo is public.*
 
-*GitHub link:*
+*GitHub link:* https://github.com/zhouyu-jilu/ReproducibleFigures.git
 
 *You will be marked on your repo organisation and readability.*
 
 ### b) Share your repo with a partner, download, and try to run their data pipeline.
 
-*Partner's GitHub link:*
+*Partner's GitHub link:* https://github.com/frogdog22/reproducibleFigures.git
 
 *You **must** provide this so I can verify there is no plagiarism between you and your partner.*
 
