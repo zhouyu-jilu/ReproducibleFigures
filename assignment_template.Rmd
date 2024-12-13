@@ -217,7 +217,7 @@ leveneTest(body_mass_g ~ sex * species, data = penguins_clean)
 
 #Statistical Analysis of the model:
 Anova(penguinModel)
-summary(penguinModel)
+summary(penguinModel) # ideally I would use the kable package to present the tables in a more aesthetically pleasing way. However, when trying to install the package, I receive the error message that the package is not available for my verion of R. The xtable package also caused problems, so I have left the tables to be visualised as they are.
 ```
 
 ### Results & Discussion
