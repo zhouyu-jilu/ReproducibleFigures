@@ -239,10 +239,13 @@ interaction_plot <- ggplot(penguins_clean, aes(x = species, y = body_mass_g, col
   ) +
   theme_minimal()
 ```
-The non-parallel lines indicate that there is in fact an interaction effect between sex and species, and body mass. Additionally, the 
+Female Adelie penguins were used as the reference category, from which comparisons are drawn. There are signficant differences between Adelie and Chinstrap penguins (p < 0.05), and Adelie and Gentoo penguins (p <0.00001). There is a significant difference (p<0.01) in the difference between male vs female weights in Chinstrap penguins compared to the difference between male vs female weights in Adelie penguins (-262.89g smaller difference on average in Chinstrap than Adelie). There is a marginal difference for Gentoo penguins (130.44g on average between male vs female weights), at a p value of 0.0889.
+
+
+
 ### Conclusion
 
-The results of the ANOVA table suggest that there is a highly significant effect of sex on body mass (p<0.00001), but that the species also greatly impacts body mass (0.00001). There is also an interaction effect, as in Chinstrap penguins, males are slightly lighter than females , but in Gentoo penguins, they are slightly heavier. Overall, if controlling for species, males are heavier than females. In general, Gentoo penguins are heavier than Chinstrap or Adelie penguins. Both of these results align with the predictions made after viewing the exploratory plot.
+The results of the ANOVA table suggest that there is a highly significant effect of sex on body mass (p<0.00001), but that the species also greatly impacts body mass (0.00001). There is also as slight interaction effect, as in Chinstrap penguins, the difference between mean male and female weight is smaller than in Adelie and Gentoo penguins. Overall, if controlling for species, males are heavier than females. In general, Gentoo penguins are heavier than Chinstrap or Adelie penguins. Both of these results align with the predictions made after viewing the exploratory plot.
 ------------------------------------------------------------------------
 
 ## QUESTION 3: Open Science
@@ -264,12 +267,15 @@ The results of the ANOVA table suggest that there is a highly significant effect
 ### c) Reflect on your experience running their code. (300-500 words)
 
 -   *What elements of your partner's code helped you to understand and run their data pipeline?*
+
 Clear code comments and writing only a few lines per chunk made it easy to see the order of the code and what it did.
 
 -   *Did it run? Did you need to fix anything?*
+
 I think that part of the reason why I had difficulties running it initially was due to problems with PositCloud (I am unable to use the offline version of R as my laptop is currently non functional, the library computers don't allow R to be downloaded, and neither does the college laptop that was loaned to me). This particularly seemed to be the case for anything involving renv. However, if I just installed the packages initially when prompted, they would load without issues.  The first part of the code involving sources (i.e. source(here("functions","libraries.r"))). However, I saw that the files were actually .R not .r, so after changing the code to  source(here("functions","libraries.R")), I was able to run the chunk. On the other hand, for plotting the first figure, I initially received error messages due to the deprecated use of a particular line of code, which a new version of ggplot2 no longer recognised. This may have been avoided if renv had functioned properly. As it hadn't, I searched up the error and altered the function in the function file, to match the updated code requirements. A similar deprecation problem was found in the figure analysis chunk, and was likewise updated (at which point it ran correctly). On the other hand, I was unable to render the HTML from the file, unless I commented out all of the 'save as png' sections (after which it rendered without issue).
 
 -   *What suggestions would you make for improving their code to make it more understandable or reproducible, and why?*
+
 In general I found the code well explained and understandable. I still believe that had renv functioned (which my partner had set up, and I am not sure why it did not work), I would not have encountered to deprecated code errors, and as such the code would have run smoothly and achieved its intended purpose. There is nothing in particular that I would suggest would make it easier. Perhaps (as an inexperienced coder) it would have been simpler for me to not use functions that were separated out in another file. However, for someone more familiar with coding, I am sure that separate function files are more uesful.
 -   *If you needed to alter your partner's figure using their code, do you think that would be easy or difficult, and why?*
 I think altering my partner's figures should be easy enough with some basic understanding of R, as they had commented much of what their code did, and also had separated things into the function folder. If necessary, direct edits could be made there.
@@ -277,10 +283,14 @@ I think altering my partner's figures should be easy enough with some basic unde
 ### d) Reflect on your own code based on your experience with your partner's code and their review of yours. (300-500 words)
 
 -   *What improvements did they suggest, and do you agree?*
-My partner recommended that I use a separate file for graph making functions rather than putting the code directly into the main script. I can see that this would make it perhaps more organised, and easier to read and edit. Additionally, they recommended adding a 'README' file in order to give more information about what the coding project is about, and perhaps some start up instructions to help them run it more smoothly. I agree that this would be useful, but was under the impression that it was not something we were supposed to do for this exact assignment. Additionally, while renv appeared to work for them, one package was missed (Hmisc), and requried separate installation. They also needed to add the line 'interaction_plot' in order to make it print, though this had not been the case when I ran the chunk myself. Regardless, if it aids in reproducibility, it should be included.
+
+My partner recommended that I use a separate file for graph making functions rather than putting the code directly into the main script. I can see that this would make it perhaps more organised, and easier to read and edit. Additionally, they recommended adding a 'README' file in order to give more information about what the coding project is about, and perhaps some start up instructions to help them run it more smoothly. I agree that this would be useful, but was under the impression that it was not something we were supposed to do for this exact assignment. Additionally, while renv appeared to work for them, one package was missed (Hmisc), and required separate installation. They also needed to add the line 'interaction_plot' in order to make the graph print.
 
 -   *What did you learn about writing code for other people?*
+
 I find writing code for other people (and myself) difficult. However, I think that if you treat your code as if you are writing it for someone else, it will be much more useful to you in the future, as you are unlikely to remember much of the details of it, and so clear explanations and comments help. Likewise, if it can run on someone else's device, then it can run on yours in the future, if features such as 'renv' are used to preserve package versions. Within my own code, I realised the difficulties that people might run into simply due to being from different countries. For example, the scatterplot3d package only recognises the American spelling (color), while I am accustomed to using the British spelling (colour), the latter of which would have caused errors in my 'bad plot' code. As such, if anticipating that other people may wish to edit the code, it might be worth adding comments to mention that particularly spellings are required in order to prevent errors and improve reproducibility. Finally, I think it would be beneficial to do a 'test run' and download your code onto another device to check that it runs (particularly in the case of Windows vs Mac), prior to releasing it for other people, to ensure that results are indeed reproducible and that the code runs correctly.
+
+###References
 
 -   Maitner et al. Code sharing increases citations, but remains uncommon. <https://doi.org/10.21203/rs.3.rs-3222221/v1>
 -   Trisovic et al. A large-scale study on research code quality and execution. <https://rdcu.be/dZB7x>
