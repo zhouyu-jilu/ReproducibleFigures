@@ -60,7 +60,7 @@ sex_numeric <- as.numeric(factor(penguins_clean$sex)) - 1
 badplot <- scatterplot3d(x = penguins_clean$flipper_length_mm,
                      y = penguins_clean$body_mass_g,
                      z = sex_numeric,
-                     color = rainbow(nrow(penguins_clean)),
+                     color = rainbow(nrow(penguins_clean)), # have to use 'color' rather than 'colour' as scatterplot3d doesn't recognise the British spelling
                      main = "Bad Penguin Plot",
                      xlab = "flipper Length ",
                      ylab = "bodymass ",
@@ -130,8 +130,7 @@ This plot has many problems that prevent us from being able to correctly or easi
 
 These are the packages that will be used. They need to be installed, and loaded using the library() function. We can then take a quick look at the dataset using View() or glimpse()
 ```{r Data Exploration}
-
-# Make sure your code prints. 
+ 
 #renv::snapshot()
 
 library(tidyverse)
@@ -145,6 +144,7 @@ library(svglite)
 library(patchwork)
 library(car)
 library(dplyr)
+library(Hmisc)
 
 
 ```
@@ -158,7 +158,7 @@ penguins_clean <- penguins_raw %>%
   remove_empty_columns_rows() %>% # this removes any columns or rows that are entirely empty or contain only NA
   remove_NA() # this will remove any data points that have NA values, which can cause problems for calculations and graphical representations later on
 
-write_csv(penguins_clean, here("data", "penguins_clean.csv")) 
+write_csv(penguins_clean, here("data", "penguins_clean.csv")) # saves penguins_clean as a csv file in case of issues later on
 ```
 
 ```{r}
@@ -167,9 +167,9 @@ species_colours <- c("Adelie" = "darkgrey", "Chinstrap" = "blue", "Gentoo" = "cy
 
 # This creates an exploratory graph (a beeswarm plot in this case)
 ggplot(data = penguins_clean, aes(x = sex, y = body_mass_g, colour = species)) +
-  geom_beeswarm(cex = 2, size = 1.5) +
-  scale_color_manual(values = species_colours) +
-  labs(title = "Body Mass Distribution by Sex in Penguins",
+  geom_beeswarm(cex = 2, size = 1.5) + # controls point size
+  scale_color_manual(values = species_colours) + # changes the colours on the graph to match the listed species colours
+  labs(title = "Body Mass Distribution by Sex in Penguins", # adds title and x and y labels
        x = "Sex",
        y = "Body Mass (g)",
        colour = "Species") +
@@ -182,6 +182,19 @@ ggplot(data = penguins_clean, aes(x = sex, y = body_mass_g, colour = species)) +
 There appears to be an interesting distribution for body mass, so we could test if there is a stronger relationship between sex and body mass, or species and body mass, as well as any interaction effects. Therefore I will carry out a two-way ANOVA test.
 Just from looking at the exploratory plot, I would predict that male penguins (on average) are heavier than female penguins, and that there is a significant difference between the weight of Gentoo penguins in comparison to Chinstrap or Adelie penguins.
 To check that the assumptions of the ANOVA are met, the Shapiro-Wilks test and Levene test also need to be carried out.
+Null hypotheses:
+H0: there is no significant difference between the mean body mass of different penguin species.
+H0: there is no significant difference between the mean body mass of male and female penguins.
+(Interaction)
+H0: the effect of sex on body mass does not depend on species.
+H0: the effect of species on body mass does not depend on sex.
+
+Alternative hypotheses:
+H1: there is no significant difference between the mean body mass of different penguin species.
+H1: there is no significant difference between the mean body mass of male and female penguins.
+(Interaction)
+H1: the effect of sex on body mass does not depend on species.
+H1: the effect of species on body mass does not depend on sex.
 
 ### Statistical Methods
 I will carry out a two way ANOVA test.
@@ -215,7 +228,7 @@ summary(penguinModel)
 interaction_plot <- ggplot(penguins_clean, aes(x = species, y = body_mass_g, color = sex, group = sex)) +
   stat_summary(fun = mean, geom = "point", size = 4) + # this adds the means
   stat_summary(fun = mean, geom = "line") + # this adds lines (parallel indicates no interaction, anything else indicates an interaction effect)
-  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", width = 0.2) + # This adds error bars
+  stat_summary(fun.data = mean_cl_normal, geom = "errorbar", width = 0.2) + # This adds error bars (confidence intervals)
   scale_y_continuous(limits = c(0, 6000)) + #this sets the limits of the y axis between 0 and 6000
   labs(
     title = "Interaction of Sex and Species on Penguin Body Mass",
@@ -226,7 +239,7 @@ interaction_plot <- ggplot(penguins_clean, aes(x = species, y = body_mass_g, col
   ) +
   theme_minimal()
 ```
-
+The non-parallel lines indicate that there is in fact an interaction effect between sex and species, and body mass. Additionally, the 
 ### Conclusion
 
 The results of the ANOVA table suggest that there is a highly significant effect of sex on body mass (p<0.00001), but that the species also greatly impacts body mass (0.00001). There is also an interaction effect, as in Chinstrap penguins, males are slightly lighter than females , but in Gentoo penguins, they are slightly heavier. Overall, if controlling for species, males are heavier than females. In general, Gentoo penguins are heavier than Chinstrap or Adelie penguins. Both of these results align with the predictions made after viewing the exploratory plot.
@@ -267,7 +280,7 @@ I think altering my partner's figures should be easy enough with some basic unde
 My partner recommended that I use a separate file for graph making functions rather than putting the code directly into the main script. I can see that this would make it perhaps more organised, and easier to read and edit. Additionally, they recommended adding a 'README' file in order to give more information about what the coding project is about, and perhaps some start up instructions to help them run it more smoothly. I agree that this would be useful, but was under the impression that it was not something we were supposed to do for this exact assignment. Additionally, while renv appeared to work for them, one package was missed (Hmisc), and requried separate installation. They also needed to add the line 'interaction_plot' in order to make it print, though this had not been the case when I ran the chunk myself. Regardless, if it aids in reproducibility, it should be included.
 
 -   *What did you learn about writing code for other people?*
-I find writing code for other people (and myself) difficult. However, I think that if you treat your code as if you are writing it for someone else, it will be much more useful to you in the future, as you are unlikely to remember much of the details of it, and so clear explanations and comments help. Likewise, if it can run on someone else's device, then it can run on yours in the future, if features such as 'renv' are used to preserve package versions.
+I find writing code for other people (and myself) difficult. However, I think that if you treat your code as if you are writing it for someone else, it will be much more useful to you in the future, as you are unlikely to remember much of the details of it, and so clear explanations and comments help. Likewise, if it can run on someone else's device, then it can run on yours in the future, if features such as 'renv' are used to preserve package versions. Within my own code, I realised the difficulties that people might run into simply due to being from different countries. For example, the scatterplot3d package only recognises the American spelling (color), while I am accustomed to using the British spelling (colour), the latter of which would have caused errors in my 'bad plot' code. As such, if anticipating that other people may wish to edit the code, it might be worth adding comments to mention that particularly spellings are required in order to prevent errors and improve reproducibility. Finally, I think it would be beneficial to do a 'test run' and download your code onto another device to check that it runs (particularly in the case of Windows vs Mac), prior to releasing it for other people, to ensure that results are indeed reproducible and that the code runs correctly.
 
 -   Maitner et al. Code sharing increases citations, but remains uncommon. <https://doi.org/10.21203/rs.3.rs-3222221/v1>
 -   Trisovic et al. A large-scale study on research code quality and execution. <https://rdcu.be/dZB7x>
